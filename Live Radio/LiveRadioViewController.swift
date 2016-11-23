@@ -19,12 +19,11 @@ class LiveRadioViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad();
         
-        Parameters.sharedInstance.RADIO_URL = "http://air2.radiorecord.ru:805/rock_320";
+        Parameters.sharedInstance.RADIO_URL = "http://nrcu.gov.ua:8000/ur2-aacplus.m3u";
         
         self.playStopButton.setTitle("PLAY", for: .normal);
         
-        let volumeView = MPVolumeView(frame: CGRect.zero);
-        volumeView.isHidden = true;
+        let volumeView = MPVolumeView(frame: CGRect(x: -1000, y: -1000, width: 0, height: 0));
         self.view.addSubview(volumeView);
         self.volumeSlider.setValue(AVAudioSession.sharedInstance().outputVolume, animated: false);
         
@@ -47,7 +46,7 @@ class LiveRadioViewController : UIViewController {
             return .success;
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(LiveRadioViewController.handleRouteChange), name: Notification.Name.AVAudioSessionRouteChange, object: AVAudioSession.sharedInstance());
+        NotificationCenter.default.addObserver(self, selector: #selector(LiveRadioViewController.handleRouteChanged), name: Notification.Name.AVAudioSessionRouteChange, object: AVAudioSession.sharedInstance());
         
         NotificationCenter.default.addObserver(self, selector:  #selector(LiveRadioViewController.volumeChanged), name: Notification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil);
     }
@@ -93,7 +92,7 @@ class LiveRadioViewController : UIViewController {
     }
     
     
-    func handleRouteChange(notification : Notification) {
+    func handleRouteChanged(notification : Notification) {
         let dict = notification.userInfo;
         let routeDesc : AVAudioSessionRouteDescription = dict![AVAudioSessionRouteChangePreviousRouteKey] as! AVAudioSessionRouteDescription;
         let prevPort : AVAudioSessionPortDescription = routeDesc.outputs[0];
