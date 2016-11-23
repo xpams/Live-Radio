@@ -24,6 +24,7 @@ class LiveRadioViewController : UIViewController {
         self.playStopButton.setTitle("PLAY", for: .normal);
         
         let volumeView = MPVolumeView(frame: CGRect.zero);
+        volumeView.isHidden = true;
         self.view.addSubview(volumeView);
         self.volumeSlider.setValue(AVAudioSession.sharedInstance().outputVolume, animated: false);
         
