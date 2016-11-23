@@ -14,11 +14,18 @@ class LiveRadioViewController : UIViewController {
     var moviePlayer : MPMoviePlayerController!;
     
     @IBOutlet weak var playStopButton: UIButton!;
+    @IBOutlet weak var volumeSlider: UISlider!;
     
     override func viewDidLoad() {
         super.viewDidLoad();
+        
         Parameters.sharedInstance.RADIO_URL = "http://air2.radiorecord.ru:805/rock_320";
+        
         self.playStopButton.setTitle("PLAY", for: .normal);
+        
+        let volumeView = MPVolumeView(frame: CGRect.zero);
+        self.view.addSubview(volumeView);
+        self.volumeSlider.setValue(AVAudioSession.sharedInstance().outputVolume, animated: false);
         
         UIApplication.shared.beginReceivingRemoteControlEvents();
         let mpRemoteCommandCenter = MPRemoteCommandCenter.shared();
@@ -39,7 +46,9 @@ class LiveRadioViewController : UIViewController {
             return .success;
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(LiveRadioViewController.handleRouteChange), name: NSNotification.Name.AVAudioSessionRouteChange, object: AVAudioSession.sharedInstance());
+        NotificationCenter.default.addObserver(self, selector: #selector(LiveRadioViewController.handleRouteChange), name: Notification.Name.AVAudioSessionRouteChange, object: AVAudioSession.sharedInstance());
+        
+        NotificationCenter.default.addObserver(self, selector:  #selector(LiveRadioViewController.volumeChanged), name: Notification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil);
     }
     
     func playRadio() -> Bool {
@@ -77,6 +86,12 @@ class LiveRadioViewController : UIViewController {
         }
     }
     
+    @IBAction func volumeSliderChanging(sender: UISlider) {
+        let volumeSlider = (MPVolumeView().subviews.filter { NSStringFromClass($0.classForCoder) == "MPVolumeSlider" }.first as! UISlider);
+        volumeSlider.setValue(sender.value, animated: false);
+    }
+    
+    
     func handleRouteChange(notification : Notification) {
         let dict = notification.userInfo;
         let routeDesc : AVAudioSessionRouteDescription = dict![AVAudioSessionRouteChangePreviousRouteKey] as! AVAudioSessionRouteDescription;
@@ -85,6 +100,11 @@ class LiveRadioViewController : UIViewController {
             self.stopRadio();
             self.playStopButton.setTitle("PLAY", for: .normal);
         }
+    }
+    
+    func volumeChanged(notification : Notification) {
+        let volume : Float = notification.userInfo!["AVSystemController_AudioVolumeNotificationParameter"] as! Float;
+        self.volumeSlider.setValue(volume, animated: true);
     }
 
 }

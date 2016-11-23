@@ -35,15 +35,29 @@
                                     <action selector="playStopButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZHE-Xl-rzd"/>
                                 </connections>
                             </button>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="oLb-9z-fX3">
+                                <rect key="frame" x="94" y="391" width="187" height="31"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="183" id="3YN-Xf-3Hq"/>
+                                    <constraint firstAttribute="height" constant="30" id="jmY-dt-zi3"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="volumeSliderChangingWithSender:" destination="BYZ-38-t0r" eventType="valueChanged" id="e75-QJ-AJ2"/>
+                                </connections>
+                            </slider>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="oLb-9z-fX3" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="6GN-Qa-FL0"/>
                             <constraint firstItem="esR-zW-la0" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="UEk-iM-OlG"/>
                             <constraint firstItem="esR-zW-la0" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="auS-p9-YCO"/>
+                            <constraint firstItem="oLb-9z-fX3" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="371" id="kiH-FK-s58"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="playStopButton" destination="esR-zW-la0" id="MdG-N6-M5E"/>
+                        <outlet property="volumeSlider" destination="oLb-9z-fX3" id="bDD-QS-XBb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
